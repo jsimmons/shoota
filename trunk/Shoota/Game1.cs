@@ -71,6 +71,8 @@ namespace Shoota
             GameGlobals.InputManager.Bind( Keys.D, Binds.Right );
             GameGlobals.InputManager.Bind( Keys.Space, Binds.Jump );
             GameGlobals.InputManager.Bind( Keys.E, Binds.Use );
+            GameGlobals.InputManager.Bind( Keys.Enter, Binds.Enter );
+            GameGlobals.InputManager.Bind( Keys.Escape, Binds.ESC );
             GameGlobals.InputManager.Bind( MouseButtons.Left, Binds.Attack1 );
             GameGlobals.InputManager.Bind( MouseButtons.Right, Binds.Attack2 );
 
@@ -79,7 +81,7 @@ namespace Shoota
             GameGlobals.ScreenManager = new ScreenManager(this);
             this.Components.Add( GameGlobals.ScreenManager );
 
-            GameGlobals.ScreenManager.PushScreen( "Screen" , true );
+            GameGlobals.ScreenManager.PushScreen( "MainMenu" , true );
 
 
             GameGlobals.EntityManager = new EntityManager( this );

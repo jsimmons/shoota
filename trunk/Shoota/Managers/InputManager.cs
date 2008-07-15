@@ -16,7 +16,9 @@ namespace Shoota.Managers
         Jump,
         Attack1,
         Attack2,
-        Use
+        Use,
+        Enter,
+        ESC
     }
 
     class InputManager : GameComponent

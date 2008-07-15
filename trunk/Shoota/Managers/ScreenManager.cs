@@ -43,7 +43,7 @@ namespace Shoota.Managers
 
         // The position from 0 - 100
         // 100 meaning black screen, 0 meaning no transitioning.
-        private float transPosition;
+        private float transPosition = 101;
 
         #endregion
 
@@ -191,12 +191,13 @@ namespace Shoota.Managers
                 case TransitionState.Out:
 
                     this.transPosition += changeThisFrame;
-                       
+                    
                     if( this.transPosition >= 100 )
                     {
                         // Pop the new screens to the top of the stack. Deleting old.
                         if( this.screenToPush.DeletePrevious )
-                            this.screensToUpdate.RemoveAt( this.screensToUpdate.Count - 1 );
+                            if( this.screensToUpdate.Count > 0 )
+                                this.screensToUpdate.RemoveAt( this.screensToUpdate.Count - 1 );
 
                         this.screensToUpdate.Add( this.screenToPush );
                         
@@ -218,8 +219,8 @@ namespace Shoota.Managers
         /// <param name="gameTime">A snapshot of timing values.</param>
         public override void Draw(GameTime gameTime)
         {
-            GameGlobals.SpriteBatch.Begin( SpriteBlendMode.Additive, SpriteSortMode.Deferred, SaveStateMode.None );
-
+            GameGlobals.SpriteBatch.Begin();
+            
             // Draw all our game states.
             foreach( Screen screen in screensToUpdate )
             {
