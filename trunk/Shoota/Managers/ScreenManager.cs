@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.Storage;
 
 using System.Reflection;
+using System.Runtime.Remoting;
 
 using Shoota.GameScreens;
 
@@ -28,8 +29,11 @@ namespace Shoota.Managers
     {
         #region Fields
 
+        // A list of screens to update.
         private List<Screen> screensToUpdate;
-        private List<Screen> screensToPush;
+        
+        // The screen that will be pushed onto the update list when the transitioning is complete.
+        private Screen screenToPush;
 
         // The time taken to transition from one screen to another.
         private TimeSpan transitionTime = new TimeSpan( 750 );
@@ -53,6 +57,11 @@ namespace Shoota.Managers
             get { return this.screensToUpdate[this.screensToUpdate.Count - 1]; }
         }
 
+        public TransitionState Transition
+        {
+            get { return this.transitionState; }
+        }
+
         #endregion
 
         #region Methods
@@ -62,18 +71,19 @@ namespace Shoota.Managers
         /// </summary>
         /// <param name="type">Type of screen to create.</param>
         /// <returns>The newly created GameScreen</returns>
-        public Screen createScreen( string type )
+        private Screen createScreen( string type )
         {
             Screen newScreen;
 
             try
-            {                
-                Type screenType = Type.GetType( type, true );
-                newScreen = (Screen)( Activator.CreateInstance( screenType ) );
+            {               
+                Type screenType = Type.GetType( Assembly.CreateQualifiedName( "Shoota", "Shoota.GameScreens." + type ), true );
+                
+                newScreen = (Screen)Activator.CreateInstance( screenType );                                         
             }
             catch( Exception e )
             {
-                Console.Out.WriteLine( e.Message );
+                Console.Error.WriteLine( e.Message );
                 newScreen = null;
             }
             
@@ -97,8 +107,18 @@ namespace Shoota.Managers
         public void PushScreen( Screen screen, bool removePrevious )
         {
             screen.DeletePrevious = removePrevious;
-            this.screensToPush.Add( screen );            
+            this.screenToPush = screen;          
             
+            this.transitionState = TransitionState.Out;
+        }
+
+        public void PushScreen( string screenName, bool removePrevious )
+        {
+            Screen screen = createScreen( screenName );
+            screen.DeletePrevious = removePrevious;
+            
+            this.screenToPush = screen;
+
             this.transitionState = TransitionState.Out;
         }
 
@@ -106,13 +126,11 @@ namespace Shoota.Managers
 
         public ScreenManager(Game game) : base( game )
         {
+            this.screensToUpdate = new List<Screen>();
         }
         
         public override void Initialize()
-        {
-            this.screensToPush = new List<Screen>();
-            this.screensToUpdate = new List<Screen>();
-
+        {            
             base.Initialize();
         }
 
@@ -142,7 +160,7 @@ namespace Shoota.Managers
 
                 if( !updatedOne )
                 {
-                    screen.HandleInput( GameGlobals.InputManager );
+                    screen.HandleInput();
                     updatedOne = true;
                 }
 
@@ -153,10 +171,13 @@ namespace Shoota.Managers
             
             // TODO: Some math to update the transition time based on the current trans position, 
             // the current game time, and the total transition time.
+            
+            float changeThisFrame = 0;
 
-            float changeThisFrame = this.transitionTime.Milliseconds / gameTime.ElapsedGameTime.Milliseconds; 
+            if( gameTime.ElapsedGameTime.Milliseconds != 0 )
+                changeThisFrame = this.transitionTime.Milliseconds / gameTime.ElapsedGameTime.Milliseconds; 
 
-            switch( this.transitionState )
+            switch( this.Transition )
             {
                 case TransitionState.In:
 
@@ -174,14 +195,11 @@ namespace Shoota.Managers
                     if( this.transPosition >= 100 )
                     {
                         // Pop the new screens to the top of the stack. Deleting old.
-                        foreach( Screen scr in this.screensToPush )
-                        {
-                            if( scr.DeletePrevious && this.TopScreen != null )
-                                this.DeleteScreen( this.TopScreen );
+                        if( this.screenToPush.DeletePrevious )
+                            this.screensToUpdate.RemoveAt( this.screensToUpdate.Count - 1 );
 
-                            this.screensToUpdate.Add( scr );
-                        }
-
+                        this.screensToUpdate.Add( this.screenToPush );
+                        
                         this.transitionState = TransitionState.In;
                     }
 

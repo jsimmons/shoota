@@ -77,9 +77,9 @@ namespace Shoota
             this.Components.Add( GameGlobals.InputManager );       
 
             GameGlobals.ScreenManager = new ScreenManager(this);
-            //this.Components.Add( GameGlobals.ScreenManager );
+            this.Components.Add( GameGlobals.ScreenManager );
 
-            //GameGlobals.ScreenManager.PushScreen( GameGlobals.ScreenManager.createScreen( "Screen" ), true );
+            GameGlobals.ScreenManager.PushScreen( "Screen" , true );
 
 
             GameGlobals.EntityManager = new EntityManager( this );
