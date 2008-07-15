@@ -50,6 +50,18 @@ namespace Shoota
 
             GameGlobals.ContentManager = Content;
 
+            // Create a new SpriteBatch, which can be used to draw textures.
+            GameGlobals.SpriteBatch = new SpriteBatch( GraphicsDevice );
+
+            // Load a basic texture.
+            GameGlobals.MenuFont = Content.Load<SpriteFont>( "fonts/menufont" );
+
+            // Create a new blank texture.
+            GameGlobals.BlankTexture = new Texture2D( GraphicsDevice, 1, 1, 0, TextureUsage.None, SurfaceFormat.Color );
+            Color[] colArray = new Color[1];
+            colArray[0] = Color.White;
+            GameGlobals.BlankTexture.SetData<Color>( colArray );
+
             GameGlobals.InputManager = new InputManager(this);
             // TODO: Not this, should load from file or something.
             GameGlobals.InputManager.Bind( Keys.W, Binds.Up );
@@ -60,23 +72,15 @@ namespace Shoota
             GameGlobals.InputManager.Bind( Keys.E, Binds.Use );
             GameGlobals.InputManager.Bind( MouseButtons.Left, Binds.Attack1 );
             GameGlobals.InputManager.Bind( MouseButtons.Right, Binds.Attack2 );
-            this.Components.Add( GameGlobals.InputManager );
-
-            GameGlobals.EntityManager = new EntityManager(this);
+            this.Components.Add( GameGlobals.InputManager );       
 
             GameGlobals.ScreenManager = new ScreenManager(this);
+            //this.Components.Add( GameGlobals.ScreenManager );
 
-            // Create a new SpriteBatch, which can be used to draw textures.
-            GameGlobals.SpriteBatch = new SpriteBatch(GraphicsDevice);
+            //GameGlobals.ScreenManager.PushScreen( GameGlobals.ScreenManager.createScreen( "Screen" ), true );
 
-            // Load a basic texture.
-            GameGlobals.MenuFont = Content.Load<SpriteFont>("fonts/menufont");
 
-            // Create a new blank texture.
-            GameGlobals.BlankTexture = new Texture2D(GraphicsDevice, 1, 1, 0, TextureUsage.None, SurfaceFormat.Color);
-            Color[] colArray = new Color[1];
-            colArray[0] = Color.White;
-            GameGlobals.BlankTexture.SetData<Color>(colArray);
+            GameGlobals.EntityManager = new EntityManager( this );
         }
 
         /// <summary>
@@ -96,7 +100,7 @@ namespace Shoota
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+            if( GameGlobals.InputManager.WasBindPressed( Binds.Attack1 ) )              
                 this.Exit();
 
             // TODO: Add your update logic here
@@ -110,7 +114,7 @@ namespace Shoota
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            graphics.GraphicsDevice.Clear(Color.CornflowerBlue);
+            graphics.GraphicsDevice.Clear(Color.SlateBlue);
 
             // TODO: Add your drawing code here
 

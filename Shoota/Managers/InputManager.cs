@@ -42,12 +42,12 @@ namespace Shoota.Managers
             get { return this.prevMouseState; }
         }
 
-        public KeyboardState KeyboardState
+        public KeyboardState CurrKeyboardState
         {
             get { return this.currKeyboardState; }
         }
 
-        public KeyboardState LastKeyboardState
+        public KeyboardState PrevKeyboardState
         {
             get { return this.prevKeyboardState; }
         }
@@ -96,7 +96,7 @@ namespace Shoota.Managers
         {
             if( keyBindings.ContainsKey( bind ) )
             {
-                return KeyboardState.IsKeyDown( keyBindings[bind] );
+                return currKeyboardState.IsKeyDown( keyBindings[bind] );
             }
             else if( mouseBindings.ContainsKey( bind ))
             {
@@ -117,11 +117,11 @@ namespace Shoota.Managers
         {
             if( keyBindings.ContainsKey( bind ) )
             {
-                return KeyboardState.IsKeyDown( keyBindings[bind] ) && LastKeyboardState.IsKeyUp( keyBindings[bind] );
+                return prevKeyboardState.IsKeyDown( keyBindings[bind] ) && currKeyboardState.IsKeyUp( keyBindings[bind] );
             }
             else if( mouseBindings.ContainsKey( bind ) )
             {
-                return CurrMouseState.IsButtonDown( mouseBindings[bind] ) && PrevMouseState.IsButtonUp( mouseBindings[bind] );
+                return prevMouseState.IsButtonDown( mouseBindings[bind] ) && currMouseState.IsButtonUp( mouseBindings[bind] );
             }
             else
             {
@@ -148,7 +148,7 @@ namespace Shoota.Managers
             prevMouseState = currMouseState;
             currMouseState.Update();
 
-            prevKeyboardState = KeyboardState;
+            prevKeyboardState = currKeyboardState;
             currKeyboardState = Keyboard.GetState();
 
             base.Update(gameTime);
