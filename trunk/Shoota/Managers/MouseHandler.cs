@@ -22,7 +22,7 @@ namespace Shoota.Managers
 
         public MouseHandler()
         {
-            mouse = Mouse.GetState();
+            this.mouse = Mouse.GetState();
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace Shoota.Managers
             {          
                 case MouseButtons.Left:
                     return mouse.LeftButton == ButtonState.Pressed;
-
+  
                 case MouseButtons.Middle:
                     return mouse.MiddleButton == ButtonState.Pressed;
 
