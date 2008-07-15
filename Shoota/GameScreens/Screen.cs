@@ -14,7 +14,7 @@ namespace Shoota.GameScreens
         #region Fields
 
         private bool markedForDelete = false;
-        private bool deletePrevWhenPushed;
+        private bool deletePrev = false;
 
         #endregion
 
@@ -27,8 +27,8 @@ namespace Shoota.GameScreens
 
         public bool DeletePrevious
         {
-            set { this.deletePrevWhenPushed = value; }
-            get { return this.deletePrevWhenPushed; }
+            set { this.deletePrev = value; }
+            get { return this.deletePrev; }
         }
 
         #endregion
@@ -71,8 +71,7 @@ namespace Shoota.GameScreens
         /// <summary>
         /// Input handling should be managed here.
         /// </summary>
-        /// <param name="input">The input manager object</param>
-        public virtual void HandleInput( InputManager input )
+        public virtual void HandleInput()
         {
         }
 
