@@ -32,36 +32,58 @@ namespace Shoota.Managers
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// Get the current mouse state.
+        /// </summary>
         public MouseHandler CurrMouseState
         {
             get { return this.currMouseState; }
         }
 
+        /// <summary>
+        /// Get the previous mouse state.
+        /// </summary>
         public MouseHandler PrevMouseState
         {
             get { return this.prevMouseState; }
         }
 
+        /// <summary>
+        /// Get the current keyboard state.
+        /// </summary>
         public KeyboardState CurrKeyboardState
         {
             get { return this.currKeyboardState; }
         }
 
+        /// <summary>
+        /// Get the previous keyboard state.
+        /// </summary>
         public KeyboardState PrevKeyboardState
         {
             get { return this.prevKeyboardState; }
         }
 
+        /// <summary>
+        /// Returns a vector describing the current mouse position in screen coords.
+        /// </summary>
         public Vector2 MousePosition
         {
             get { return new Vector2( this.currMouseState.X, this.currMouseState.Y ); }
         }
 
+        /// <summary>
+        /// Returns a vector describing the previous mouse position in screen coords.
+        /// </summary>
         public Vector2 PrevMousePosition
         {
             get { return new Vector2( this.prevMouseState.X, this.prevMouseState.Y ); }
         }
 
+        /// <summary>
+        /// Returns a vector describing the mouses displacement over the last frame.
+        /// </summary>
         public Vector2 MouseVelocity
         {
             get { return MousePosition - PrevMousePosition; }
@@ -71,16 +93,21 @@ namespace Shoota.Managers
         #region Methods
 
         /// <summary>
-        /// "Binds" a key to a bind.
+        /// Binds a key to a bind.
         /// </summary>
         /// <param name="key">The key to use for the binding</param>
-        /// <param name="bind">The bind to "bind" the key to</param>
+        /// <param name="bind">The bind to map the key to</param>
         public void Bind(Keys key, Binds bind)
         {
             this.mouseBindings.Remove( bind );
             this.keyBindings[bind] = key;
         }
 
+        /// <summary>
+        /// Binds a mouse button to a bind.
+        /// </summary>
+        /// <param name="button">Mouse button to bind.</param>
+        /// <param name="bind">The bind the key should be mapped to.</param>
         public void Bind( MouseButtons button, Binds bind )
         {
             this.keyBindings.Remove( bind );
@@ -130,6 +157,11 @@ namespace Shoota.Managers
         }
 
         #region DefaultMethods
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="game">The game object.</param>
         public InputManager(Game game) : base( game )
         {
             this.currKeyboardState = new KeyboardState();
@@ -143,10 +175,14 @@ namespace Shoota.Managers
             this.Bind( Keys.A, Binds.Left );
         }
 
+        /// <summary>
+        /// Updates the input manager.
+        /// </summary>
+        /// <param name="gameTime">A snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
             prevMouseState = currMouseState;
-            currMouseState.Update();
+            currMouseState = new MouseHandler();
 
             prevKeyboardState = currKeyboardState;
             currKeyboardState = Keyboard.GetState();
