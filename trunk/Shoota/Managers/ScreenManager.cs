@@ -212,10 +212,9 @@ namespace Shoota.Managers
 
             // TODO: Calculate alpha from current transition position.
             byte alpha = (byte)((this.transPosition / 100) * 255);
-
-            // TODO: Add ScrW and ScrH properties to the globals class.
-            GameGlobals.SpriteBatch.Draw( GameGlobals.BlankTexture, new Rectangle( 0, 0, GameGlobals.GraphicsDevice.Viewport.Width, GameGlobals.GraphicsDevice.Viewport.Height ), new Color( 0, 0, 0, alpha ) );
-
+    
+            GameGlobals.SpriteBatch.Draw( GameGlobals.BlankTexture, new Rectangle( 0, 0, GameGlobals.ScrW, GameGlobals.ScrH ), new Color( 0, 0, 0, alpha ) );
+          
             GameGlobals.SpriteBatch.End();
 
             base.Draw( gameTime );

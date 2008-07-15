@@ -27,5 +27,21 @@ namespace Shoota
         public static SpriteBatch SpriteBatch;
         public static SpriteFont MenuFont;
         public static Texture2D BlankTexture;
+
+        public static int ScrW
+        {
+            get
+            {
+                return GraphicsDevice.Viewport.Width;
+            }
+        }
+
+        public static int ScrH
+        {
+            get
+            {
+                return GraphicsDevice.Viewport.Height;
+            }
+        }
     }
 }

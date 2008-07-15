@@ -102,13 +102,5 @@ namespace Shoota.Managers
             }
             return false;
         }
-
-        /// <summary>
-        /// Updates the mouse etc, etc.
-        /// </summary>
-        public void Update()
-        {
-            this.mouse = Mouse.GetState();
-        }
     }
 }

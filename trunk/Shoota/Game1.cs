@@ -63,6 +63,7 @@ namespace Shoota
             GameGlobals.BlankTexture.SetData<Color>( colArray );
 
             GameGlobals.InputManager = new InputManager(this);
+
             // TODO: Not this, should load from file or something.
             GameGlobals.InputManager.Bind( Keys.W, Binds.Up );
             GameGlobals.InputManager.Bind( Keys.S, Binds.Down );
@@ -72,6 +73,7 @@ namespace Shoota
             GameGlobals.InputManager.Bind( Keys.E, Binds.Use );
             GameGlobals.InputManager.Bind( MouseButtons.Left, Binds.Attack1 );
             GameGlobals.InputManager.Bind( MouseButtons.Right, Binds.Attack2 );
+
             this.Components.Add( GameGlobals.InputManager );       
 
             GameGlobals.ScreenManager = new ScreenManager(this);
