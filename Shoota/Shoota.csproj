@@ -82,6 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GameGlobals.cs" />
+    <Compile Include="GameScreens\ExitScreen.cs" />
     <Compile Include="GameScreens\MainMenu.cs" />
     <Compile Include="GameScreens\MenuBase.cs" />
     <Compile Include="GameScreens\Screen.cs" />

@@ -104,8 +104,8 @@ namespace Shoota
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
-            if( GameGlobals.InputManager.WasBindPressed( Binds.Attack1 ) )              
-                this.Exit();
+            //if( GameGlobals.InputManager.WasBindPressed( Binds.Attack1 ) )              
+            //  this.Exit();
 
             // TODO: Add your update logic here
 
