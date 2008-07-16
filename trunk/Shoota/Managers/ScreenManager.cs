@@ -36,7 +36,7 @@ namespace Shoota.Managers
         private Screen screenToPush;
 
         // The time taken to transition from one screen to another.
-        private TimeSpan transitionTime = new TimeSpan( 750 );
+        private TimeSpan transitionTime = TimeSpan.FromMilliseconds( 200 );
         
         // The current transition state.
         private TransitionState transitionState;
@@ -94,7 +94,7 @@ namespace Shoota.Managers
         /// Deletes a screen, internal use only.
         /// </summary>
         /// <param name="screen">Screen to delete.</param>
-        public void DeleteScreen( Screen screen )
+        private void DeleteScreen( Screen screen )
         {
             this.screensToUpdate.Remove( screen );
         }
@@ -106,20 +106,36 @@ namespace Shoota.Managers
         /// <param name="removePrevious">Remove the previous top entry before adding this?</param>
         public void PushScreen( Screen screen, bool removePrevious )
         {
-            screen.DeletePrevious = removePrevious;
-            this.screenToPush = screen;          
-            
-            this.transitionState = TransitionState.Out;
+            if( screen != null )
+            {
+                screen.DeletePrevious = removePrevious;
+                this.screenToPush = screen;
+
+                this.transitionState = TransitionState.Out;
+            }
         }
 
         public void PushScreen( string screenName, bool removePrevious )
-        {
+        {           
             Screen screen = createScreen( screenName );
-            screen.DeletePrevious = removePrevious;
-            
-            this.screenToPush = screen;
 
-            this.transitionState = TransitionState.Out;
+            if( screen != null )
+            {
+                screen.DeletePrevious = removePrevious;
+
+                this.screenToPush = screen;
+
+                this.transitionState = TransitionState.Out;
+            }
+        }
+
+        /// <summary>
+        /// Pops the top screen off the "stack"
+        /// </summary>
+        public void PopScreen()
+        {
+            if( this.screensToUpdate.Count > 0 )
+                this.screensToUpdate.RemoveAt( this.screensToUpdate.Count - 1 );
         }
 
         #region Generic methods
@@ -149,12 +165,14 @@ namespace Shoota.Managers
             // Update the screens.
 
             // Create a copy of the screens to update so we can delete screens during the update process.
-            Screen[] toUpdate = screensToUpdate.ToArray();
+            Screen[] toUpdate = screensToUpdate.ToArray();           
 
             bool updatedOne = false;
 
-            foreach( Screen screen in toUpdate )
+            for( int i = toUpdate.Length - 1; i >= 0; i-- )                      
             {
+                Screen screen = toUpdate[i];
+
                 if( screen.MarkedForDelete )
                     DeleteScreen( screen );
 
@@ -184,7 +202,10 @@ namespace Shoota.Managers
                     this.transPosition -= changeThisFrame;
 
                     if( this.transPosition <= 0 )
+                    {
+                        this.transPosition = 0;
                         this.transitionState = TransitionState.None;
+                    }
 
                     break;
 
@@ -194,6 +215,8 @@ namespace Shoota.Managers
                     
                     if( this.transPosition >= 100 )
                     {
+                        this.transPosition = 100;
+
                         // Pop the new screens to the top of the stack. Deleting old.
                         if( this.screenToPush.DeletePrevious )
                             if( this.screensToUpdate.Count > 0 )
@@ -221,7 +244,7 @@ namespace Shoota.Managers
         {
             GameGlobals.SpriteBatch.Begin();
             
-            // Draw all our game states.
+            // Draw all our game states. Drawing lowest screen first.
             foreach( Screen screen in screensToUpdate )
             {
                 screen.Draw( gameTime, GameGlobals.SpriteBatch );
@@ -231,8 +254,9 @@ namespace Shoota.Managers
 
             // TODO: Calculate alpha from current transition position.
             byte alpha = (byte)((this.transPosition / 100) * 255);
-    
-            GameGlobals.SpriteBatch.Draw( GameGlobals.BlankTexture, new Rectangle( 0, 0, GameGlobals.ScrW, GameGlobals.ScrH ), new Color( 0, 0, 0, alpha ) );
+            
+            if( alpha > 10 )
+                GameGlobals.SpriteBatch.Draw( GameGlobals.BlankTexture, new Rectangle( 0, 0, GameGlobals.ScrW, GameGlobals.ScrH ), new Color( 0, 0, 0, alpha ) );
           
             GameGlobals.SpriteBatch.End();
 
