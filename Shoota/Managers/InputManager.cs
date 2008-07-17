@@ -173,8 +173,6 @@ namespace Shoota.Managers
 
             this.keyBindings = new Dictionary<Binds, Keys>();
             this.mouseBindings = new Dictionary<Binds, MouseButtons>();
-
-            this.Bind( Keys.A, Binds.Left );
         }
 
         /// <summary>
