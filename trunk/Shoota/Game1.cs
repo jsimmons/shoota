@@ -26,6 +26,9 @@ namespace Shoota
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
+            graphics.PreferredBackBufferWidth = 1280;
+            graphics.PreferredBackBufferHeight = 854;
         }
 
         /// <summary>
@@ -64,9 +67,6 @@ namespace Shoota
             // Loads the autoconfiguration script.
             GameGlobals.ConsoleManager.ParseFile( "Config/autorun.conf" );
 
-            // Push the main menu and go.
-            GameGlobals.ScreenManager.PushScreen( "MainMenu", true );
-
             base.Initialize();
         }
 
@@ -96,7 +96,10 @@ namespace Shoota
             colArray[0] = Color.White;
             GameGlobals.BlankTexture.SetData<Color>( colArray );
 
-            GameGlobals.PostProcessManager.Effect = Content.Load<Effect>( "shaders/blur" );
+            // Push the main menu and go.
+            GameGlobals.ScreenManager.PushScreen( "MainMenu", true );
+
+            //GameGlobals.PostProcessManager.Effect = Content.Load<Effect>( "shaders/menu" );
         }
 
         /// <summary>
