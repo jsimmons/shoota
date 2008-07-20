@@ -63,6 +63,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="shaders\menu.fx">
+      <Name>menu</Name>
+      <Importer>EffectImporter</Importer>
+      <Processor>EffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="shaders\blur.fx">
       <Name>blur</Name>
       <Importer>EffectImporter</Importer>

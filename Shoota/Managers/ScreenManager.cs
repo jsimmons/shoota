@@ -96,6 +96,7 @@ namespace Shoota.Managers
         /// <param name="screen">Screen to delete.</param>
         private void DeleteScreen( Screen screen )
         {
+            screen.UnloadContent();
             this.screensToUpdate.Remove( screen );
         }
 
@@ -108,6 +109,9 @@ namespace Shoota.Managers
         {
             if( screen != null )
             {
+                screen.Initialize();
+                screen.LoadContent();
+
                 screen.DeletePrevious = removePrevious;
                 this.screenToPush = screen;
 
@@ -121,6 +125,9 @@ namespace Shoota.Managers
 
             if( screen != null )
             {
+                screen.Initialize();
+                screen.LoadContent();
+
                 screen.DeletePrevious = removePrevious;
 
                 this.screenToPush = screen;
@@ -135,7 +142,11 @@ namespace Shoota.Managers
         public void PopScreen()
         {
             if( this.screensToUpdate.Count > 0 )
+            {
+                this.screensToUpdate[screensToUpdate.Count - 1].UnloadContent();
+
                 this.screensToUpdate.RemoveAt( this.screensToUpdate.Count - 1 );
+            }
         }
 
         #region Default methods
@@ -146,8 +157,33 @@ namespace Shoota.Managers
         }
         
         public override void Initialize()
-        {            
+        {
+            foreach( Screen screen in this.screensToUpdate )
+            {
+                screen.Initialize();
+            }
+
             base.Initialize();
+        }
+
+        protected override void LoadContent()
+        {
+            foreach( Screen screen in this.screensToUpdate )
+            {
+                screen.LoadContent();
+            }
+
+            base.LoadContent();
+        }
+
+        protected override void UnloadContent()
+        {
+            foreach( Screen screen in this.screensToUpdate )
+            {
+                screen.UnloadContent();
+            }
+
+            base.UnloadContent();
         }
 
         public override void Update(GameTime gameTime)
@@ -263,23 +299,27 @@ namespace Shoota.Managers
 
             // Lets do some post processing.
 
-            if( GameGlobals.PostProcessManager.Effect != null )
+            Effect effect = ( TopScreen.Effect != null ? TopScreen.Effect : GameGlobals.PostProcessManager.Effect );
+
+            if( effect != null )
             {
                 // Draw with a post processing shader.
                 GameGlobals.SpriteBatch.Begin( SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.SaveState );
 
-                GameGlobals.PostProcessManager.Effect.Begin();
+                effect.Begin();
+               
+                effect.Parameters["gameTime"].SetValue( (float)gameTime.TotalGameTime.TotalSeconds );
+                effect.Parameters["pixelSizeX"].SetValue( 1.0f / GameGlobals.PostProcessManager.ScreenTexture.Width );
+                effect.Parameters["pixelSizeY"].SetValue( 1.0f / GameGlobals.PostProcessManager.ScreenTexture.Height );
 
-                GameGlobals.PostProcessManager.Effect.Parameters["gameTime"].SetValue( (float)gameTime.TotalGameTime.TotalSeconds );
-
-                foreach( EffectPass pass in GameGlobals.PostProcessManager.Effect.CurrentTechnique.Passes )
+                foreach( EffectPass pass in effect.CurrentTechnique.Passes )
                 {
                     pass.Begin();
                     GameGlobals.SpriteBatch.Draw( GameGlobals.PostProcessManager.ScreenTexture, GameGlobals.FullScreenRect, Color.White );
                     pass.End();
                 }
 
-                GameGlobals.PostProcessManager.Effect.End();
+                effect.End();
 
                 GameGlobals.SpriteBatch.End();
             }

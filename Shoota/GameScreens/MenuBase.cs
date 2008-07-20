@@ -60,6 +60,8 @@ namespace Shoota.GameScreens
 
             this.textPaddingAbove = 20;
             this.textPaddingLeft = 60;
+
+            this.shaderName = "";
         }
 
         /// <summary>

@@ -16,6 +16,9 @@ namespace Shoota.GameScreens
         private bool markedForDelete = false;
         private bool deletePrev = false;
 
+        protected string shaderName;
+        private Effect effect;
+
         #endregion
 
         #region Properties
@@ -31,6 +34,17 @@ namespace Shoota.GameScreens
             get { return this.deletePrev; }
         }
 
+        public Effect Effect
+        {
+            set { this.effect = value; }
+            get { return this.effect; }
+        }
+
+        public string ShaderName
+        {
+            get { return this.shaderName; }
+            set { this.shaderName = value; }
+        }
         #endregion
 
         #region Methods
@@ -59,6 +73,11 @@ namespace Shoota.GameScreens
         /// </summary>
         public virtual void LoadContent()
         {
+            try
+            {
+                effect = GameGlobals.ContentManager.Load<Effect>( "shaders/" + shaderName );
+            }
+            catch { }
         }
 
         /// <summary>
