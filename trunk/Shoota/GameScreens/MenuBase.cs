@@ -51,8 +51,8 @@ namespace Shoota.GameScreens
             this.title = "No Title!";
             this.items = new List<string>();
 
-            this.bgColor = new Color( 0, 0, 0, 100 );
-            this.textColor = Color.Gray;
+            this.bgColor = new Color( 0, 0, 0, 0 );
+            this.textColor = Color.LightBlue;
             this.highColor = Color.Green;
 
             this.titlePaddingAbove = 30;
@@ -152,7 +152,7 @@ namespace Shoota.GameScreens
         /// <param name="batch">A spritebatch object for drawing sprites</param>
         public override void Draw( Microsoft.Xna.Framework.GameTime time, Microsoft.Xna.Framework.Graphics.SpriteBatch batch )
         {
-            batch.Draw( GameGlobals.BlankTexture, new Rectangle( 0, 0, GameGlobals.ScrW, GameGlobals.ScrH ), this.bgColor );
+            batch.Draw( GameGlobals.BlankTexture, GameGlobals.FullScreenRect, this.bgColor );
 
             batch.DrawString( GameGlobals.MenuFontLarge, this.title, new Vector2( this.titlePaddingLeft, this.titlePaddingAbove ), this.textColor );
 

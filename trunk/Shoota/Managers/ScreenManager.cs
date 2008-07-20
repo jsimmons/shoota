@@ -239,6 +239,8 @@ namespace Shoota.Managers
         {
             GameGlobals.PostProcessManager.PreRender();
 
+            GameGlobals.GraphicsDevice.Clear( Color.DarkRed );
+
             GameGlobals.SpriteBatch.Begin();
             
             // Draw all our game states. Drawing lowest screen first.
