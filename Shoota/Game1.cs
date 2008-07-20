@@ -130,8 +130,6 @@ namespace Shoota
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            graphics.GraphicsDevice.Clear(Color.SlateBlue);
-
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);

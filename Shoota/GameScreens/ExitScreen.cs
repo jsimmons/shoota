@@ -18,7 +18,7 @@ namespace Shoota.GameScreens
             items.Add( "Return to menu" );
             items.Add( "Really Exit" );
 
-            this.bgColor = new Color( 0, 0, 0, 200 );
+            this.bgColor = new Color( 0, 0, 0, 220 );
         }
 
         public override void Select( int selection )
