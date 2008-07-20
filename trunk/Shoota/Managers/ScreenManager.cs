@@ -138,7 +138,7 @@ namespace Shoota.Managers
                 this.screensToUpdate.RemoveAt( this.screensToUpdate.Count - 1 );
         }
 
-        #region Generic methods
+        #region Default methods
 
         public ScreenManager(Game game) : base( game )
         {
@@ -148,16 +148,6 @@ namespace Shoota.Managers
         public override void Initialize()
         {            
             base.Initialize();
-        }
-
-        protected override void LoadContent()
-        {
-            base.LoadContent();
-        }
-
-        protected override void UnloadContent()
-        {
-            base.UnloadContent();
         }
 
         public override void Update(GameTime gameTime)
@@ -175,6 +165,11 @@ namespace Shoota.Managers
 
                 if( screen.MarkedForDelete )
                     DeleteScreen( screen );
+
+                if( GameGlobals.ConsoleManager.ConsoleEnabled )
+                {
+                    updatedOne = true;
+                }
 
                 if( !updatedOne )
                 {
@@ -242,6 +237,8 @@ namespace Shoota.Managers
         /// <param name="gameTime">A snapshot of timing values.</param>
         public override void Draw(GameTime gameTime)
         {
+            GameGlobals.PostProcessManager.PreRender();
+
             GameGlobals.SpriteBatch.Begin();
             
             // Draw all our game states. Drawing lowest screen first.
@@ -256,9 +253,41 @@ namespace Shoota.Managers
             byte alpha = (byte)((this.transPosition / 100) * 255);
             
             if( alpha > 10 )
-                GameGlobals.SpriteBatch.Draw( GameGlobals.BlankTexture, new Rectangle( 0, 0, GameGlobals.ScrW, GameGlobals.ScrH ), new Color( 0, 0, 0, alpha ) );
+                GameGlobals.SpriteBatch.Draw( GameGlobals.BlankTexture, GameGlobals.FullScreenRect, new Color( 0, 0, 0, alpha ) );
           
             GameGlobals.SpriteBatch.End();
+
+            GameGlobals.PostProcessManager.PostRender();
+
+            // Lets do some post processing.
+
+            if( GameGlobals.PostProcessManager.Effect != null )
+            {
+                // Draw with a post processing shader.
+                GameGlobals.SpriteBatch.Begin( SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.SaveState );
+
+                GameGlobals.PostProcessManager.Effect.Begin();
+
+                GameGlobals.PostProcessManager.Effect.Parameters["gameTime"].SetValue( (float)gameTime.TotalGameTime.TotalSeconds );
+
+                foreach( EffectPass pass in GameGlobals.PostProcessManager.Effect.CurrentTechnique.Passes )
+                {
+                    pass.Begin();
+                    GameGlobals.SpriteBatch.Draw( GameGlobals.PostProcessManager.ScreenTexture, GameGlobals.FullScreenRect, Color.White );
+                    pass.End();
+                }
+
+                GameGlobals.PostProcessManager.Effect.End();
+
+                GameGlobals.SpriteBatch.End();
+            }
+            else
+            {
+                // Draw with no shader.
+                GameGlobals.SpriteBatch.Begin();
+                GameGlobals.SpriteBatch.Draw( GameGlobals.PostProcessManager.ScreenTexture, GameGlobals.FullScreenRect, Color.White );
+                GameGlobals.SpriteBatch.End();
+            }
 
             base.Draw( gameTime );
         }

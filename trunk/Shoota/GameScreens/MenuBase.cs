@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+
+using Shoota.Managers;
 
 namespace Shoota.GameScreens
 {
@@ -104,11 +107,11 @@ namespace Shoota.GameScreens
         public override void HandleInput()
         {
             // Move the selection up and down.
-            if( GameGlobals.InputManager.WasBindPressed( Shoota.Managers.Binds.Up ) )
+            if( GameGlobals.InputManager.WasBindReleased( Binds.Up ) || GameGlobals.InputManager.WasKeyReleased( Keys.Up ) )
             {
                 selection--;
             }
-            else if( GameGlobals.InputManager.WasBindPressed( Shoota.Managers.Binds.Down ) )
+            else if( GameGlobals.InputManager.WasBindReleased( Binds.Down ) || GameGlobals.InputManager.WasKeyReleased( Keys.Down ) )
             {
                 selection++;
             }
@@ -121,11 +124,11 @@ namespace Shoota.GameScreens
                 selection = 0;
 
             // Handle selection and cancelation events.
-            if( GameGlobals.InputManager.WasBindPressed( Shoota.Managers.Binds.Enter ) )
+            if( GameGlobals.InputManager.WasBindReleased( Binds.Enter ) )
             {
                 Select( selection );
             }
-            else if( GameGlobals.InputManager.WasBindPressed( Shoota.Managers.Binds.ESC ) )
+            else if( GameGlobals.InputManager.WasBindReleased( Binds.ESC ) )
             {
                 Cancel();
             }
@@ -151,23 +154,23 @@ namespace Shoota.GameScreens
         {
             batch.Draw( GameGlobals.BlankTexture, new Rectangle( 0, 0, GameGlobals.ScrW, GameGlobals.ScrH ), this.bgColor );
 
-            batch.DrawString( GameGlobals.MenuFont, this.title, new Vector2( this.titlePaddingLeft, this.titlePaddingAbove ), this.textColor );
+            batch.DrawString( GameGlobals.MenuFontLarge, this.title, new Vector2( this.titlePaddingLeft, this.titlePaddingAbove ), this.textColor );
 
             for( int i = 0; i < items.Count; i++ )
             {
-                Vector2 size = GameGlobals.MenuFont.MeasureString( items[i] );
+                Vector2 size = GameGlobals.MenuFontSmall.MeasureString( items[i] );
 
                 float x = this.textPaddingLeft;
                 float y = ( this.textPaddingAbove * i ) + ( size.Y * i ) + ( this.titlePaddingAbove * 3 );
 
                 if( i == selection )
                 {
-                    batch.DrawString( GameGlobals.MenuFont, items[i], new Vector2( x, y ), this.highColor );
-                    batch.DrawString( GameGlobals.MenuFont, "->", new Vector2( x - 50, y ), this.highColor );
+                    batch.DrawString( GameGlobals.MenuFontSmall, items[i], new Vector2( x, y ), this.highColor );
+                    batch.DrawString( GameGlobals.MenuFontSmall, "->", new Vector2( x - 50, y ), this.highColor );
                 }
                 else
                 {
-                    batch.DrawString( GameGlobals.MenuFont, items[i], new Vector2( x, y ), this.textColor );
+                    batch.DrawString( GameGlobals.MenuFontSmall, items[i], new Vector2( x, y ), this.textColor );
                 }
             }
 
