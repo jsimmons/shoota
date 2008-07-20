@@ -36,6 +36,37 @@ namespace Shoota
         /// </summary>
         protected override void Initialize()
         {
+            // Create the Console and make sure it draws on top of everything else.
+            GameGlobals.ConsoleManager = new ConsoleManager( this );
+            GameGlobals.ConsoleManager.DrawOrder = 1;
+            this.Components.Add( GameGlobals.ConsoleManager );
+
+            // Create and start the input manager.
+            GameGlobals.InputManager = new InputManager( this );
+            this.Components.Add( GameGlobals.InputManager );
+
+            // Add our post processor system.
+            GameGlobals.PostProcessManager = new PostProcessManager( this );
+            this.Components.Add( GameGlobals.PostProcessManager );
+            
+            // Create and start the screen manager.
+            GameGlobals.ScreenManager = new ScreenManager( this );
+            this.Components.Add( GameGlobals.ScreenManager );
+
+            GameGlobals.EntityManager = new EntityManager( this );
+
+            GameGlobals.ConsoleManager.AddConCommand( "bind", new ConCommandCallback( GameGlobals.InputManager.Bind ) );
+
+            System.Reflection.AssemblyName name = System.Reflection.Assembly.GetEntryAssembly().GetName();
+            GameGlobals.ConsoleManager.WriteLine( name.FullName );
+            GameGlobals.ConsoleManager.WriteLine( "" );
+
+            // Loads the autoconfiguration script.
+            GameGlobals.ConsoleManager.ParseFile( "Config/autorun.conf" );
+
+            // Push the main menu and go.
+            GameGlobals.ScreenManager.PushScreen( "MainMenu", true );
+
             base.Initialize();
         }
 
@@ -53,8 +84,11 @@ namespace Shoota
             // Create a new SpriteBatch, which can be used to draw textures.
             GameGlobals.SpriteBatch = new SpriteBatch( GraphicsDevice );
 
-            // Load a basic texture.
-            GameGlobals.MenuFont = Content.Load<SpriteFont>( "fonts/menufont" );
+            // Load a basic fonts.
+            GameGlobals.MenuFontLarge = Content.Load<SpriteFont>( "fonts/menuFontLarge" );
+            GameGlobals.MenuFontSmall = Content.Load<SpriteFont>( "fonts/menuFontSmall" );
+            GameGlobals.ConsoleFontLarge = Content.Load<SpriteFont>( "fonts/consoleFontLarge" );
+            GameGlobals.ConsoleFontSmall = Content.Load<SpriteFont>( "fonts/consoleFontSmall" );
 
             // Create a new blank texture.
             GameGlobals.BlankTexture = new Texture2D( GraphicsDevice, 1, 1, 0, TextureUsage.None, SurfaceFormat.Color );
@@ -62,29 +96,7 @@ namespace Shoota
             colArray[0] = Color.White;
             GameGlobals.BlankTexture.SetData<Color>( colArray );
 
-            GameGlobals.InputManager = new InputManager(this);
-
-            // TODO: Not this, should load from file or something.
-            GameGlobals.InputManager.Bind( Keys.W, Binds.Up );
-            GameGlobals.InputManager.Bind( Keys.S, Binds.Down );
-            GameGlobals.InputManager.Bind( Keys.A, Binds.Left );
-            GameGlobals.InputManager.Bind( Keys.D, Binds.Right );
-            GameGlobals.InputManager.Bind( Keys.Space, Binds.Jump );
-            GameGlobals.InputManager.Bind( Keys.E, Binds.Use );
-            GameGlobals.InputManager.Bind( Keys.Enter, Binds.Enter );
-            GameGlobals.InputManager.Bind( Keys.Escape, Binds.ESC );
-            GameGlobals.InputManager.Bind( MouseButtons.Left, Binds.Attack1 );
-            GameGlobals.InputManager.Bind( MouseButtons.Right, Binds.Attack2 );
-
-            this.Components.Add( GameGlobals.InputManager );       
-
-            GameGlobals.ScreenManager = new ScreenManager(this);
-            this.Components.Add( GameGlobals.ScreenManager );
-
-            GameGlobals.ScreenManager.PushScreen( "MainMenu" , true );
-
-
-            GameGlobals.EntityManager = new EntityManager( this );
+            GameGlobals.PostProcessManager.Effect = Content.Load<Effect>( "shaders/blur" );
         }
 
         /// <summary>

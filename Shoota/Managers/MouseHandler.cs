@@ -9,11 +9,11 @@ namespace Shoota.Managers
 {
     enum MouseButtons
     {
-        Left,
-        Middle,
-        Right,
-        X1,
-        X2
+        M_Left,
+        M_Middle,
+        M_Right,
+        M_X1,
+        M_X2
     }
 
     class MouseHandler
@@ -58,19 +58,19 @@ namespace Shoota.Managers
         {
             switch( button )
             {          
-                case MouseButtons.Left:
+                case MouseButtons.M_Left:
                     return mouse.LeftButton == ButtonState.Pressed;
   
-                case MouseButtons.Middle:
+                case MouseButtons.M_Middle:
                     return mouse.MiddleButton == ButtonState.Pressed;
 
-                case MouseButtons.Right:
+                case MouseButtons.M_Right:
                     return mouse.RightButton == ButtonState.Pressed;                 
 
-                case MouseButtons.X1:
+                case MouseButtons.M_X1:
                     return mouse.XButton1 == ButtonState.Pressed;
 
-                case MouseButtons.X2:
+                case MouseButtons.M_X2:
                     return mouse.XButton1 == ButtonState.Pressed;
             }
             return false;
@@ -85,19 +85,19 @@ namespace Shoota.Managers
         {
             switch( button )
             {
-                case MouseButtons.Left:
+                case MouseButtons.M_Left:
                     return this.mouse.LeftButton == ButtonState.Released;
 
-                case MouseButtons.Middle:
+                case MouseButtons.M_Middle:
                     return this.mouse.MiddleButton == ButtonState.Released;
 
-                case MouseButtons.Right:
+                case MouseButtons.M_Right:
                     return this.mouse.RightButton == ButtonState.Released;
 
-                case MouseButtons.X1:
+                case MouseButtons.M_X1:
                     return this.mouse.XButton1 == ButtonState.Released;
 
-                case MouseButtons.X2:
+                case MouseButtons.M_X2:
                     return this.mouse.XButton1 == ButtonState.Released;
             }
             return false;
