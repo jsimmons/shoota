@@ -11,6 +11,8 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.Storage;
 
+using FarseerGames.FarseerPhysics;
+
 using Shoota.Managers;
 
 namespace Shoota
@@ -26,12 +28,15 @@ namespace Shoota
         public static ConsoleManager ConsoleManager;
         public static PostProcessManager PostProcessManager;
 
+        public static PhysicsSimulator PhysicsSimulator;
+
         public static SpriteBatch SpriteBatch;
 
         public static SpriteFont MenuFontLarge;
         public static SpriteFont MenuFontSmall;
         public static SpriteFont ConsoleFontLarge;
         public static SpriteFont ConsoleFontSmall;
+        public static SpriteFont PerfMonFont;
 
         public static Texture2D BlankTexture;
 
