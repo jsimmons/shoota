@@ -44,6 +44,10 @@ namespace Shoota
             GameGlobals.ConsoleManager.DrawOrder = 1;
             this.Components.Add( GameGlobals.ConsoleManager );
 
+            PerformanceMonitor perfmon = new PerformanceMonitor( this );
+            perfmon.DrawOrder = 2;
+            this.Components.Add( perfmon );
+
             // Create and start the input manager.
             GameGlobals.InputManager = new InputManager( this );
             this.Components.Add( GameGlobals.InputManager );
@@ -55,6 +59,8 @@ namespace Shoota
             // Create and start the screen manager.
             GameGlobals.ScreenManager = new ScreenManager( this );
             this.Components.Add( GameGlobals.ScreenManager );
+
+            GameGlobals.PhysicsSimulator = new FarseerGames.FarseerPhysics.PhysicsSimulator( new Vector2( 0, 200 ) );
 
             GameGlobals.EntityManager = new EntityManager( this );
 
@@ -89,6 +95,8 @@ namespace Shoota
             GameGlobals.MenuFontSmall = Content.Load<SpriteFont>( "fonts/menuFontSmall" );
             GameGlobals.ConsoleFontLarge = Content.Load<SpriteFont>( "fonts/consoleFontLarge" );
             GameGlobals.ConsoleFontSmall = Content.Load<SpriteFont>( "fonts/consoleFontSmall" );
+            GameGlobals.PerfMonFont = GameGlobals.ContentManager.Load<SpriteFont>( "fonts/perfmonFont" );
+
 
             // Create a new blank texture.
             GameGlobals.BlankTexture = new Texture2D( GraphicsDevice, 1, 1, 0, TextureUsage.None, SurfaceFormat.Color );
@@ -133,7 +141,7 @@ namespace Shoota
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            // TODO: Add your drawing code here
+            // TODO: Add your drawing code here.
 
             base.Draw(gameTime);
         }

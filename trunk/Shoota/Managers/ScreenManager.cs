@@ -253,6 +253,10 @@ namespace Shoota.Managers
                             if( this.screensToUpdate.Count > 0 )
                                 this.screensToUpdate.RemoveAt( this.screensToUpdate.Count - 1 );
 
+                        // Update the post processor with the top screen's effect.
+                        GameGlobals.PostProcessManager.Effect = screenToPush.Effect;
+
+                        // Add it to the stack.
                         this.screensToUpdate.Add( this.screenToPush );
                         
                         this.transitionState = TransitionState.In;
@@ -295,41 +299,11 @@ namespace Shoota.Managers
           
             GameGlobals.SpriteBatch.End();
 
-            GameGlobals.PostProcessManager.PostRender();
+            // Prepare for post processing step.
+            GameGlobals.PostProcessManager.PostRender( );
 
-            // Lets do some post processing.
-
-            Effect effect = ( TopScreen.Effect != null ? TopScreen.Effect : GameGlobals.PostProcessManager.Effect );
-
-            if( effect != null )
-            {
-                // Draw with a post processing shader.
-                GameGlobals.SpriteBatch.Begin( SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.SaveState );
-
-                effect.Begin();
-               
-                effect.Parameters["gameTime"].SetValue( (float)gameTime.TotalGameTime.TotalSeconds );
-                effect.Parameters["pixelSizeX"].SetValue( 1.0f / GameGlobals.PostProcessManager.ScreenTexture.Width );
-                effect.Parameters["pixelSizeY"].SetValue( 1.0f / GameGlobals.PostProcessManager.ScreenTexture.Height );
-
-                foreach( EffectPass pass in effect.CurrentTechnique.Passes )
-                {
-                    pass.Begin();
-                    GameGlobals.SpriteBatch.Draw( GameGlobals.PostProcessManager.ScreenTexture, GameGlobals.FullScreenRect, Color.White );
-                    pass.End();
-                }
-
-                effect.End();
-
-                GameGlobals.SpriteBatch.End();
-            }
-            else
-            {
-                // Draw with no shader.
-                GameGlobals.SpriteBatch.Begin();
-                GameGlobals.SpriteBatch.Draw( GameGlobals.PostProcessManager.ScreenTexture, GameGlobals.FullScreenRect, Color.White );
-                GameGlobals.SpriteBatch.End();
-            }
+            // DO IT!
+            GameGlobals.PostProcessManager.PostProcess( gameTime );
 
             base.Draw( gameTime );
         }

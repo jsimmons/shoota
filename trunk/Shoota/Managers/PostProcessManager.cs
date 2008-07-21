@@ -16,6 +16,10 @@ namespace Shoota.Managers
 
         private Effect effect;
 
+        EffectParameter pGameTime;
+        EffectParameter pPixelSizeX;
+        EffectParameter pPixelSizeY;
+
         public Texture2D ScreenTexture
         {
             get { return PPTexture; }
@@ -24,7 +28,17 @@ namespace Shoota.Managers
         public Effect Effect
         {
             get { return effect; }
-            set { effect = value; }
+
+            set 
+            {
+                if( value != null )
+                {
+                    effect = value;
+                    pGameTime = effect.Parameters["gameTime"];
+                    pPixelSizeX = effect.Parameters["pixelSizeX"];
+                    pPixelSizeY = effect.Parameters["pixelSizeY"];
+                }
+            }
         }
 
         public PostProcessManager(Game game) : base( game )
@@ -55,16 +69,60 @@ namespace Shoota.Managers
             );
         }
 
+        /// <summary>
+        /// Call before rendering the scene to prepare for post processing.
+        /// </summary>
         public void PreRender()
         {
             temp = (RenderTarget2D)GraphicsDevice.GetRenderTarget( 0 );
             GameGlobals.GraphicsDevice.SetRenderTarget( 0, PPTarget );
         }
 
+        /// <summary>
+        /// Call after rendering the scene to prepare for post processing.
+        /// </summary>
         public void PostRender()
         {
             GameGlobals.GraphicsDevice.SetRenderTarget( 0, temp );
             PPTexture = PPTarget.GetTexture();
+        }
+
+        /// <summary>
+        /// Perform the post processing.
+        /// </summary>
+        public void PostProcess( GameTime gameTime )
+        {
+            if( effect != null )
+            {
+                // Set the values of default parameters.
+                pGameTime.SetValue( (float)gameTime.TotalGameTime.TotalSeconds );
+                pPixelSizeX.SetValue( 1.0f / GameGlobals.PostProcessManager.ScreenTexture.Width );
+                pPixelSizeY.SetValue( 1.0f / GameGlobals.PostProcessManager.ScreenTexture.Height );
+
+                // Begin our post processing.
+                GameGlobals.SpriteBatch.Begin( SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None );
+
+                effect.Begin();
+
+                // Draw once for each pass.
+                foreach( EffectPass pass in effect.CurrentTechnique.Passes )
+                {
+                    pass.Begin();
+                    GameGlobals.SpriteBatch.Draw( GameGlobals.PostProcessManager.ScreenTexture, GameGlobals.FullScreenRect, Color.Black );
+                    pass.End();
+                }
+
+                effect.End();
+
+                GameGlobals.SpriteBatch.End();
+            }
+            else
+            {
+                GameGlobals.SpriteBatch.Begin();
+                GameGlobals.SpriteBatch.Draw( GameGlobals.PostProcessManager.ScreenTexture, GameGlobals.FullScreenRect, Color.White );
+                GameGlobals.SpriteBatch.End();
+            }
+
         }
     }
 }

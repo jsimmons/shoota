@@ -11,7 +11,7 @@ float gameTime = 0;
 float pixelSizeX = 0.001f;
 float pixelSizeY = 0.001f;
 
-static const float blurStrength = 1.5f;
+float blurStrength = 1.5f;
 
 static const int g_cKernelSize = 13;
 
@@ -63,7 +63,7 @@ technique Technique1
         PixelShader = compile ps_2_0 BlurHorizontal();      
     }
     
-	pass Pass1
+	pass Pass2
     {
         PixelShader = compile ps_2_0 BlurVertical();      
     }

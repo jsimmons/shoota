@@ -1,0 +1,245 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <ProjectGuid>{48E7E660-6728-40F9-91AB-AFCD9477EF5F}</ProjectGuid>
+    <ProjectTypeGuids>{6D335F3A-9D43-41b4-9D22-F6F17C4BE596};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FarseerGames.FarseerPhysics</RootNamespace>
+    <AssemblyName>FarseerGames.FarseerPhysics</AssemblyName>
+    <XnaFrameworkVersion>v2.0</XnaFrameworkVersion>
+    <XnaPlatform>Windows</XnaPlatform>
+    <Thumbnail>
+    </Thumbnail>
+    <XnaCrossPlatformGroupID>{cb84202b-8d88-4284-a2bc-5ddf82cdcf18}</XnaCrossPlatformGroupID>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\x86\Debug</OutputPath>
+    <DefineConstants>TRACE;DEBUG;XNA</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\x86\Release</OutputPath>
+    <DefineConstants>TRACE;XNA</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Xna.Framework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=x86">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Game, Version=2.0.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="mscorlib">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Collisions\AABB.cs">
+      <Name>AABB</Name>
+    </Compile>
+    <Compile Include="Collisions\BruteForceCollider.cs">
+      <Name>BruteForceCollider</Name>
+    </Compile>
+    <Compile Include="Collisions\CollisionHelper.cs">
+      <Name>CollisionHelper</Name>
+    </Compile>
+    <Compile Include="Collisions\Contact.cs">
+      <Name>Contact</Name>
+    </Compile>
+    <Compile Include="Collisions\ContactId.cs">
+      <Name>ContactId</Name>
+    </Compile>
+    <Compile Include="Collisions\ContactList.cs">
+      <Name>ContactList</Name>
+    </Compile>
+    <Compile Include="Collisions\Feature.cs">
+      <Name>Feature</Name>
+    </Compile>
+    <Compile Include="Collisions\Geom.cs">
+      <Name>Geom</Name>
+    </Compile>
+    <Compile Include="Collisions\GeomFactory.cs">
+      <Name>GeomFactory</Name>
+    </Compile>
+    <Compile Include="Collisions\GeomList.cs">
+      <Name>GeomList</Name>
+    </Compile>
+    <Compile Include="Collisions\Grid.cs">
+      <Name>Grid</Name>
+    </Compile>
+    <Compile Include="Collisions\IBroadPhaseCollider.cs">
+      <Name>IBroadPhaseCollider</Name>
+    </Compile>
+    <Compile Include="Collisions\ICollideable.cs">
+      <Name>ICollideable</Name>
+    </Compile>
+    <Compile Include="Collisions\SelectiveSweepCollider.cs">
+      <Name>SelectiveSweepCollider</Name>
+    </Compile>
+    <Compile Include="Collisions\SweepAndPruneCollider.cs">
+      <Name>SweepAndPruneCollider</Name>
+    </Compile>
+    <Compile Include="Collisions\Vertices.cs">
+      <Name>Vertices</Name>
+    </Compile>
+    <Compile Include="Controllers\AABBFluidContainer.cs" />
+    <Compile Include="Controllers\FluidContainer.cs" />
+    <Compile Include="Controllers\FluidDragController.cs" />
+    <Compile Include="Controllers\WaveController.cs" />
+    <Compile Include="Dynamics\AngleLimitJoint.cs">
+      <Name>AngleLimitJoint</Name>
+    </Compile>
+    <Compile Include="Dynamics\Controller.cs">
+      <Name>Controller</Name>
+    </Compile>
+    <Compile Include="Dynamics\ControllerList.cs">
+      <Name>ControllerList</Name>
+    </Compile>
+    <Compile Include="Dynamics\SliderJoint.cs">
+      <Name>SliderJoint</Name>
+    </Compile>
+    <Compile Include="Dynamics\PinJoint.cs">
+      <Name>PinJoint</Name>
+    </Compile>
+    <Compile Include="Dynamics\FixedAngleLimitJoint.cs">
+      <Name>FixedAngleLimitJoint</Name>
+    </Compile>
+    <Compile Include="Dynamics\FixedAngleJoint.cs">
+      <Name>FixedAngleJoint</Name>
+    </Compile>
+    <Compile Include="Dynamics\FixedRevoluteJoint.cs">
+      <Name>FixedRevoluteJoint</Name>
+    </Compile>
+    <Compile Include="Dynamics\JointFactory.cs">
+      <Name>JointFactory</Name>
+    </Compile>
+    <Compile Include="Dynamics\FixedAngleSpring.cs">
+      <Name>FixedAngleSpring</Name>
+    </Compile>
+    <Compile Include="Dynamics\ControllerFactory.cs">
+      <Name>ControllerFactory</Name>
+    </Compile>
+    <Compile Include="Enums.cs">
+      <Name>Enums</Name>
+    </Compile>
+    <Compile Include="Mathematics\MathHelper.cs">
+      <Name>MathHelper</Name>
+    </Compile>
+    <Compile Include="Mathematics\Matrix.cs">
+      <Name>Matrix</Name>
+    </Compile>
+    <Compile Include="Mathematics\Vector2.cs">
+      <Name>Vector2</Name>
+    </Compile>
+    <Compile Include="Mathematics\Vector3.cs">
+      <Name>Vector3</Name>
+    </Compile>
+    <Compile Include="Dynamics\AngleJoint.cs">
+      <Name>AngleJoint</Name>
+    </Compile>
+    <Compile Include="Dynamics\AngleSpring.cs">
+      <Name>AngleSpring</Name>
+    </Compile>
+    <Compile Include="Dynamics\Arbiter.cs">
+      <Name>Arbiter</Name>
+    </Compile>
+    <Compile Include="Dynamics\ArbiterList.cs">
+      <Name>ArbiterList</Name>
+    </Compile>
+    <Compile Include="Dynamics\Body.cs">
+      <Name>Body</Name>
+    </Compile>
+    <Compile Include="Dynamics\BodyFactory.cs">
+      <Name>BodyFactory</Name>
+    </Compile>
+    <Compile Include="Dynamics\BodyList.cs">
+      <Name>BodyList</Name>
+    </Compile>
+    <Compile Include="Dynamics\FixedLinearSpring.cs">
+      <Name>FixedLinearSpring</Name>
+    </Compile>
+    <Compile Include="Dynamics\InteractiveAngleJoint.cs">
+      <SubType>Code</SubType>
+      <Name>InteractiveAngleJoint</Name>
+    </Compile>
+    <Compile Include="Dynamics\Joint.cs">
+      <Name>Joint</Name>
+    </Compile>
+    <Compile Include="Dynamics\JointList.cs">
+      <Name>JointList</Name>
+    </Compile>
+    <Compile Include="Dynamics\LinearSpring.cs">
+      <Name>LinearSpring</Name>
+    </Compile>
+    <Compile Include="Dynamics\RevoluteJoint.cs">
+      <Name>RevoluteJoint</Name>
+    </Compile>
+    <Compile Include="IIsDisposable.cs">
+      <Name>IIsDisposable</Name>
+    </Compile>
+    <Compile Include="Mathematics\BilinearInterpolator.cs">
+      <Name>BilinearInterpolator</Name>
+    </Compile>
+    <Compile Include="Mathematics\Calculator.cs">
+      <Name>Calculator</Name>
+    </Compile>
+    <Compile Include="Mathematics\CircularInterpolator.cs">
+      <Name>CircularInterpolator</Name>
+    </Compile>
+    <Compile Include="Mathematics\ConvertUnits.cs">
+      <Name>ConvertUnits</Name>
+    </Compile>
+    <Compile Include="PhysicsSimulator.cs">
+      <Name>PhysicsSimulator</Name>
+    </Compile>
+    <Compile Include="Pool.cs">
+      <Name>Pool</Name>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <NestedContentProject Include="Content.contentproj">
+      <Project>{449adbd6-9021-4cf7-910c-dd69c58b397d}</Project>
+      <Visible>False</Visible>
+    </NestedContentProject>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Documents\FarseerPhysicsManual.html" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\v2.0\Microsoft.Xna.GameStudio.Common.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\v2.0\Microsoft.Xna.GameStudio.NestedContent.targets" />
+</Project>

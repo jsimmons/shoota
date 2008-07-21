@@ -165,7 +165,7 @@ namespace Shoota.Managers
 
             if( command.Length < 1 )
                 return false;
-            
+
             Regex argsRegex = new Regex( @" (?<bleah>(?<="")[^""]*(?="")|\b\w*\b)", RegexOptions.IgnoreCase | RegexOptions.Compiled );
 
             List<string> argList = new List<string>();
