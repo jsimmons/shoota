@@ -18,17 +18,21 @@ namespace Shoota
     /// <summary>
     /// This is the main type for your game
     /// </summary>
-    public class Game1 : Microsoft.Xna.Framework.Game
+    public class Shoota : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager graphics;
 
-        public Game1()
+        public Shoota()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
             graphics.PreferredBackBufferWidth = 1280;
             graphics.PreferredBackBufferHeight = 854;
+
+            graphics.SynchronizeWithVerticalRetrace = false;
+
+            this.IsFixedTimeStep = false;         
         }
 
         /// <summary>
@@ -39,11 +43,7 @@ namespace Shoota
         /// </summary>
         protected override void Initialize()
         {
-            // Create the Console and make sure it draws on top of everything else.
-            GameGlobals.ConsoleManager = new ConsoleManager( this );
-            GameGlobals.ConsoleManager.DrawOrder = 1;
-            this.Components.Add( GameGlobals.ConsoleManager );
-
+            // Create the FPS counter.
             PerformanceMonitor perfmon = new PerformanceMonitor( this );
             perfmon.DrawOrder = 2;
             this.Components.Add( perfmon );
@@ -51,6 +51,11 @@ namespace Shoota
             // Create and start the input manager.
             GameGlobals.InputManager = new InputManager( this );
             this.Components.Add( GameGlobals.InputManager );
+
+            // Create the Console and make sure it draws on top of everything else.
+            GameGlobals.ConsoleManager = new ConsoleManager( this );
+            GameGlobals.ConsoleManager.DrawOrder = 1;
+            this.Components.Add( GameGlobals.ConsoleManager );
 
             // Add our post processor system.
             GameGlobals.PostProcessManager = new PostProcessManager( this );
@@ -60,11 +65,11 @@ namespace Shoota
             GameGlobals.ScreenManager = new ScreenManager( this );
             this.Components.Add( GameGlobals.ScreenManager );
 
-            GameGlobals.PhysicsSimulator = new FarseerGames.FarseerPhysics.PhysicsSimulator( new Vector2( 0, 200 ) );
-
             GameGlobals.EntityManager = new EntityManager( this );
+            this.Components.Add( GameGlobals.EntityManager );
 
-            GameGlobals.ConsoleManager.AddConCommand( "bind", new ConCommandCallback( GameGlobals.InputManager.Bind ) );
+            GameGlobals.MaterialManager = new MaterialManager( this, Content );
+            this.Components.Add( GameGlobals.MaterialManager );
 
             System.Reflection.AssemblyName name = System.Reflection.Assembly.GetEntryAssembly().GetName();
             GameGlobals.ConsoleManager.WriteLine( name.FullName );
@@ -72,6 +77,9 @@ namespace Shoota
 
             // Loads the autoconfiguration script.
             GameGlobals.ConsoleManager.ParseFile( "Config/autorun.conf" );
+
+            // Load up some scripting.
+            LuaManager luaManager = new LuaManager();
 
             base.Initialize();
         }
@@ -95,7 +103,7 @@ namespace Shoota
             GameGlobals.MenuFontSmall = Content.Load<SpriteFont>( "fonts/menuFontSmall" );
             GameGlobals.ConsoleFontLarge = Content.Load<SpriteFont>( "fonts/consoleFontLarge" );
             GameGlobals.ConsoleFontSmall = Content.Load<SpriteFont>( "fonts/consoleFontSmall" );
-            GameGlobals.PerfMonFont = GameGlobals.ContentManager.Load<SpriteFont>( "fonts/perfmonFont" );
+            GameGlobals.PerfMonFont = Content.Load<SpriteFont>( "fonts/perfmonFont" );
 
 
             // Create a new blank texture.
@@ -106,8 +114,6 @@ namespace Shoota
 
             // Push the main menu and go.
             GameGlobals.ScreenManager.PushScreen( "MainMenu", true );
-
-            //GameGlobals.PostProcessManager.Effect = Content.Load<Effect>( "shaders/menu" );
         }
 
         /// <summary>
@@ -126,10 +132,6 @@ namespace Shoota
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            // Allows the game to exit
-            //if( GameGlobals.InputManager.WasBindPressed( Binds.Attack1 ) )              
-            //  this.Exit();
-
             // TODO: Add your update logic here
 
             base.Update(gameTime);
@@ -142,7 +144,7 @@ namespace Shoota
         protected override void Draw(GameTime gameTime)
         {
             // TODO: Add your drawing code here.
-
+     
             base.Draw(gameTime);
         }
     }

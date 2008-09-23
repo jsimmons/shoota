@@ -12,7 +12,6 @@ using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.Storage;
 
 using System.Reflection;
-using System.Runtime.Remoting;
 
 using Shoota.GameScreens;
 
