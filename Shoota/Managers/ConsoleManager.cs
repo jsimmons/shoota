@@ -97,15 +97,17 @@ namespace Shoota.Managers
         /// Writes a line to the game console
         /// </summary>
         /// <param name="line">The line to write</param>
-        public void WriteLine( string line )
+        public void WriteLine( Object line )
         {
+            string newLine = line.ToString();
+
             if( lineBuffer.Count > maxBufferSize )
                 lineBuffer.Dequeue();
 
             if( lineBuffer.Count - 1 == scrollPosition + lines )
                 scrollPosition++;
 
-            lineBuffer.Enqueue( line );
+            lineBuffer.Enqueue( newLine );
         }
 
         /// <summary>
@@ -240,6 +242,8 @@ namespace Shoota.Managers
             this.lines = 10;
 
             this.scrollPosition = 0;
+
+            AddConCommand( "bind", new ConCommandCallback( GameGlobals.InputManager.Bind ) );
         }
 
         /// <summary>

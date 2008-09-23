@@ -20,6 +20,9 @@ namespace Shoota
         private double fps;
         private double frameTime;
 
+        private double accumFrameTime;
+        private int frames;
+
         public PerformanceMonitor( Game game )
             : base( game )
         {
@@ -57,8 +60,17 @@ namespace Shoota
             this.frameTime = gameTime.ElapsedGameTime.TotalMilliseconds;
 
             if( gameTime.ElapsedGameTime.TotalSeconds != 0 )
-                this.fps = 1 / gameTime.ElapsedGameTime.TotalSeconds;            
+            {
+                this.accumFrameTime += gameTime.ElapsedGameTime.TotalSeconds;
+                this.frames++;
 
+                if( frames >= 10 )
+                {
+                    this.fps = frames / accumFrameTime;
+                    accumFrameTime = 0;
+                    frames = 0;
+                }
+            }
             base.Update( gameTime );
         }
 

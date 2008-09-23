@@ -27,6 +27,7 @@ namespace Shoota
         public static ScreenManager ScreenManager;
         public static ConsoleManager ConsoleManager;
         public static PostProcessManager PostProcessManager;
+        public static MaterialManager MaterialManager;
 
         public static PhysicsSimulator PhysicsSimulator;
 

@@ -57,7 +57,13 @@ namespace Shoota.Managers
             base.UnloadContent();
         }
 
-        public static RenderTarget2D CloneRenderTarget( GraphicsDevice device, int numberLevels )
+        /// <summary>
+        /// Clones a render target.
+        /// </summary>
+        /// <param name="device">The graphics device to pull the settings from.</param>
+        /// <param name="numberLevels">Number of levels.</param>
+        /// <returns></returns>
+        private static RenderTarget2D CloneRenderTarget( GraphicsDevice device, int numberLevels )
         {
             return new RenderTarget2D( device,
                 device.PresentationParameters.BackBufferWidth,
